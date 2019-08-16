@@ -3,6 +3,7 @@ package com.example.nettydemo.Interview;
 
 import sun.rmi.runtime.NewThreadAction;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,6 +23,19 @@ class MyData{
     }
 }
 
+class Aa {
+    private int a1;
+    private String s1;
+
+    public int getA1() {
+        return a1;
+    }
+
+    public void setA1(int a1) {
+        this.a1 = a1;
+    }
+}
+
 /**
  * 1.验证 volatile的可见性
  *  1.1加入int number = 0； number变量之前根本没有添加volatile关键字修饰  没有可见性
@@ -35,23 +49,32 @@ class MyData{
 public class VolatileDemo {
 
     public static void main(String[] args) { //main 是一切方法的入口
-        MyData myData = new MyData();
+       // MyData myData = new MyData();
+       //
+       // for (int i = 1; i<=20; i++){
+       //     new Thread(()->{
+       //         for (int j = 0; j < 1000; j++) {
+       //             myData.addPlusPlus();
+       //             myData.addMyAtomic();
+       //         }
+       //     },String.valueOf(i)).start();
+       // }
+       //
+       // //需要等待20个线程计算完成后再用main线程取得最终的结果值看是多少
+       //while (Thread.activeCount()>2){
+       //     Thread.yield();
+       //}
+       // System.out.println(Thread.currentThread().getName()+"\t int type finally number value:"+ myData.number);
+       // System.out.println(Thread.currentThread().getName()+"\t atomicInteger type finally number value:"+ myData.atomicInteger);
+        Aa a = new Aa();
+        a.setA1(2);
+        Aa b = null;
 
-        for (int i = 1; i<=20; i++){
-            new Thread(()->{
-                for (int j = 0; j < 1000; j++) {
-                    myData.addPlusPlus();
-                    myData.addMyAtomic();
-                }
-            },String.valueOf(i)).start();
-        }
+        //System.out.println("a :" +Optional.ofNullable(a).map(aa -> aa.getA1()).orElse(1));
+        //System.out.println("a :" +Optional.ofNullable(b).map(aa -> aa.getA1()).orElse(3));
+        //System.out.println("a :" +Optional.ofNullable(b.getA1() ).orElse(3));
 
-        //需要等待20个线程计算完成后再用main线程取得最终的结果值看是多少
-       while (Thread.activeCount()>2){
-            Thread.yield();
-       }
-        System.out.println(Thread.currentThread().getName()+"\t int type finally number value:"+ myData.number);
-        System.out.println(Thread.currentThread().getName()+"\t atomicInteger type finally number value:"+ myData.atomicInteger);
+
 
     }
 
